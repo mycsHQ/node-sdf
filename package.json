@@ -1,0 +1,43 @@
+{
+  "name": "node-sdf",
+  "version": "0.1.0",
+  "description": "A node wrapper for Netsuite Suitescript Development Framework CLI",
+  "license": "MIT",
+  "author": {
+    "name": "Johann Roehl",
+    "email": "mail@johannroehl.de",
+    "url": "https://github.com/mycsHQ/node-sdf"
+  },
+  "bugs": {
+    "url": "https://github.com/mycshq/node-sdf/issues"
+  },
+  "homepage": "https://github.com/mycshq/node-sdf#readme",
+  "keywords": [
+    "NetSuite",
+    "SuiteCloud",
+    "SDF",
+    "sdfcli",
+    "SuiteCloud Development Framework"
+  ],
+  "bin": {
+    "sdf": "./cli/sdf.js"
+  },
+  "scripts": {
+    "lint": "eslint --config .eslintrc.js --cache cli --cache lib --cache spec",
+    "setup": "node ./lib/setup.js"
+  },
+  "dependencies": {
+    "co": "^4.6.0",
+    "co-prompt": "^1.0.0",
+    "commander": "^2.9.0",
+    "maven": "^4.2.0",
+    "tar-fs": "^1.15.3"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.0.0",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-config-mycs": "^2.0.0",
+    "eslint-plugin-import": "^2.3.0"
+  }
+}
