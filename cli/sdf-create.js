@@ -1,14 +1,11 @@
 #!/usr/bin/env node
-
 const path = require('path');
 const fs = require('fs');
 
-const co = require('co');
-const prompt = require('co-prompt');
-const program = require('commander');
+const { prompt } = require('../lib/helpers');
 
-const { netsuite: { account = '', email = '', url = '', role = 3 } } = require('../config');
-
+const { netsuite: { account = '', email = '', url = '', role = 3 } } = require(
+  '../config');
 
 /**
  * Replace all occurences of placeholders in template specified as key/value pairs
@@ -19,7 +16,8 @@ const { netsuite: { account = '', email = '', url = '', role = 3 } } = require('
  * @returns {string} modified template content
  */
 const processTemplate = (replaceOptions, templatePath) => {
-  const template = fs.readFileSync(path.join(__dirname, templatePath)).toString();
+  const template = fs.readFileSync(path.join(__dirname, templatePath))
+    .toString();
   return Object.keys(replaceOptions)
     .reduce(
       (tmp, key) => tmp.replace(new RegExp(`@@${ key.toUpperCase() }`, 'g'),
@@ -27,18 +25,7 @@ const processTemplate = (replaceOptions, templatePath) => {
 };
 
 /**
- *
- * @param {string} query
- *
- * @returns {string} user input
- */
-const readline = function* (query) {
-  const result = yield prompt(query);
-  process.stdin.pause();
-  return result;
-};
-
-/**
+ * Make path in a recursive manner, creating all directories along the path
  *
  * @param {string} pathToCreate
  */
@@ -55,15 +42,17 @@ const mkdirRecursive = (pathToCreate) => {
     }, '');
 };
 
-program
-  .option('-p, --path [value]', 'The path for the created project')
-  .parse(process.argv);
+/**
+ * Handle the create cli command
+ *
+ * @param {string} cmd
+ * @param {object} options
+ */
+async function handler(cmd, { path: projectPath }) {
+  if (cmd !== 'create') return;
+  projectPath = path.resolve(process.cwd(), projectPath || '');
 
-let { path: projectPath } = program;
-projectPath = path.resolve(process.cwd(), projectPath || '');
-
-console.log(
-  `
+  console.log(`
   This script creates a new SuiteCloud project in the specified folder.
   Make sure that you have read/write access to that folder.
 
@@ -71,10 +60,9 @@ console.log(
   ======================
   1. Account customization project
   2. SuiteApp project
-`);
+  `);
 
-co(function* () {
-  const projectType = yield readline('Type 1 or 2 then press ENTER: ');
+  const projectType = await prompt('Type 1 or 2 then press ENTER: ');
 
   let publisherId;
   let projectId;
@@ -82,12 +70,12 @@ co(function* () {
   let projectName;
 
   if (projectType === '1') {
-    projectName = yield readline('Enter a project name: ');
+    projectName = await prompt('Enter a project name: ');
   } else if (projectType === '2') {
-    publisherId = yield readline('Enter your publisher ID: ');
-    projectId = yield readline('Enter your project ID: ');
-    projectName = yield readline('Enter your project name: ');
-    projectVersion = yield readline('Enter your project version: ');
+    publisherId = await prompt('Enter your publisher ID: ');
+    projectId = await prompt('Enter your project ID: ');
+    projectName = await prompt('Enter your project name: ');
+    projectVersion = await prompt('Enter your project version: ');
   } else {
     console.error('Project type has to be either 1 or 2!');
     process.exit(1);
@@ -131,16 +119,8 @@ co(function* () {
   console.log(`
   End of script.
   Edit the .sdf file in the new project folder to complete the process
-  In the .sdf file, specify your account ID, login, and account URL.`
-  );
-});
+  In the .sdf file, specify your account ID, login, and account URL.
+  `);
+}
 
-
-program.on('--help', () => {
-  console.log('  Examples:');
-  console.log('');
-  console.log('    $ sdf create -p ./newSdfProject');
-  console.log('');
-});
-
-program.parse(process.argv);
+module.exports = handler;
