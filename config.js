@@ -1,8 +1,8 @@
 module.exports = {
   netsuite: {
-    account: '4030959_SB1',
-    email: 'devs@mycs.com',
-    url: 'system.eu1.netsuite.com',
+    account: '',
+    email: '',
+    url: '',
     role: 3,
   },
   dependencies: {
