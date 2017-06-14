@@ -32,7 +32,6 @@
   "dependencies": {
     "commander": "^2.9.0",
     "glob": "^7.1.2",
-    "maven": "^4.2.0",
     "node-jre": "^0.2.1",
     "tar-fs": "^1.15.3"
   },
