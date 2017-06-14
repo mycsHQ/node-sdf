@@ -23,11 +23,12 @@
     "sdf": "./cli/sdf.js"
   },
   "engines": {
-    "node": ">=8.1.1"
+    "node": ">=7.8.0"
   },
   "scripts": {
     "lint": "eslint --config .eslintrc.js --cache cli --cache lib --cache spec",
-    "setup": "node ./lib/setup.js"
+    "setup": "node ./lib/setup.js",
+    "postinstall": "npm run setup"
   },
   "dependencies": {
     "commander": "^2.9.0",

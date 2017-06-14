@@ -10,8 +10,7 @@ A helper tool to decrypt encrypt data through AWS KMS service. Decryption and En
 ## Installation
 
 ```bash
-npm install
-npm run setup # downloads and installs the sdfcli dependencies
+npm install # downloads and installs the sdfcli dependencies
 ```
 
 > Add your netsuite credentials to config files if the generated `.sdf` files should be prefilled with your credentials
