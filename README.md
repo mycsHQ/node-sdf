@@ -11,6 +11,7 @@ A helper tool to decrypt encrypt data through AWS KMS service. Decryption and En
 
 ```bash
 npm install
+npm run setup # downloads and installs the sdfcli dependencies
 ```
 
 > Add your netsuite credentials to config files if the generated `.sdf` files should be prefilled with your credentials
@@ -93,6 +94,7 @@ As the commands are routed through to the original NetSuite sdfcli - the followi
 
 
 ## Requirements
+- for now JRE and maven have to be installed prior using the cli
 - This project needs node > 8.
 
 ## License
@@ -103,6 +105,7 @@ MIT
 [jroehl](https://github.com/jroehl "jroehl")
 
 ## TODO
+- find a way to bundle jre and maven
 - write tests
 - documentation
 
