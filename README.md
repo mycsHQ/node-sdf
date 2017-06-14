@@ -94,6 +94,7 @@ As the commands are routed through to the original NetSuite sdfcli - the followi
 
 
 ## Requirements
+- NetSuite account [settings](https://ursuscode.com/public/netsuitehelp/section_1489072297.html) have to be updated for SDF
 - for now JRE and maven have to be installed prior using the cli
 - This project needs node > 8.
 
