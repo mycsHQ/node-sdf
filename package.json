@@ -22,14 +22,18 @@
   "bin": {
     "sdf": "./cli/sdf.js"
   },
-  "engines" : { "node" : ">=8.1.1" },
+  "engines": {
+    "node": ">=8.1.1"
+  },
   "scripts": {
     "lint": "eslint --config .eslintrc.js --cache cli --cache lib --cache spec",
     "setup": "node ./lib/setup.js"
   },
   "dependencies": {
     "commander": "^2.9.0",
+    "glob": "^7.1.2",
     "maven": "^4.2.0",
+    "node-jre": "^0.2.1",
     "tar-fs": "^1.15.3"
   },
   "devDependencies": {
