@@ -1,11 +1,11 @@
 # node-sdf
 
-<!--[![Build Status](https://travis-ci.org/mycsHQ/crypt-aws-kms.svg?branch=master)](https://travis-ci.org/mycsHQ/crypt-aws-kms)
-[![npm](https://img.shields.io/npm/v/crypt-aws-kms.svg)](https://www.npmjs.com/package/crypt-aws-kms)
+<!--[![Build Status](https://travis-ci.org/mycsHQ/node-sdf.svg?branch=master)](https://travis-ci.org/mycsHQ/node-sdf)
+[![npm](https://img.shields.io/npm/v/node-sdf.svg)](https://www.npmjs.com/package/node-sdf)
 [![Code Style](https://img.shields.io/badge/code%20style-eslint--mycs-brightgreen.svg)](https://github.com/mycsHQ/eslint-config-mycs)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)-->
 
-A helper tool to decrypt encrypt data through AWS KMS service. Decryption and Encryption can be done through a cli or in the codebase with the KMS class.
+A node wrapper for Netsuite Suitescript Development Framework CLI.
 
 ## Installation
 
@@ -98,7 +98,7 @@ As the commands are routed through to the original NetSuite sdfcli - the followi
 
 ## License
 MIT
-© mycs 2015
+© mycs 2017
 
 ## Maintainer
 [jroehl](https://github.com/jroehl "jroehl")
