@@ -28,13 +28,36 @@ async function handler(cmd, params, options) {
 
   if (!password) {
     password = await prompt('Enter password: ');
-    process.stdin.pause();
   }
 
-  const sdfcli = spawn(sdfcliPath, [ cmd, args ], { stdio: [ 'pipe', process.stdout, process.stderr ] });
+  const sdfcli = spawn(sdfcliPath, [ cmd, args ]);
+
+  console.log(`\nExecuted Command:\n${ sdfcliPath } ${ cmd } ${ args }\n`);
 
   // send password to hidden prompt by sdfcli
   sdfcli.stdin.write(`${ password }\n`);
+
+  sdfcli.stdout.on('data', async (data) => {
+    const msg = data.toString();
+    // cleanup of duplicate "Enter password:" prompt
+    console.log(msg.replace('Enter password:', ''));
+    const lowerCaseMsg = msg.toLowerCase();
+    if (lowerCaseMsg.includes('?') || lowerCaseMsg.includes('Enter')) {
+      const answer = await prompt('> ');
+      sdfcli.stdin.write(`${ answer }\n`);
+    }
+  });
+
+  sdfcli.stderr.on('data', (data) => {
+    console.error(`>>> Error ${ data }`);
+  });
+
+  sdfcli.on('close', (code) => {
+    if (code !== 0) {
+      console.error(`>>> SDFCLI exited with code ${ code }`);
+    }
+    sdfcli.stdin.end();
+  });
 }
 
 module.exports = handler;
