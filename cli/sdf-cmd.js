@@ -1,45 +1,63 @@
 #!/usr/bin/env node
-
 const path = require('path');
-const program = require('commander');
-const co = require('co');
-const prompt = require('co-prompt');
 const { spawn } = require('child_process');
+
+const { prompt } = require('../lib/helpers');
 
 const sdfcliPath = path.resolve(__dirname, '..', '.dependencies', 'sdfcli');
 
-program
-  .option('-p, --password <value>', 'The path for the created project')
-  .action((command, options = '') => {
-    let { password } = program;
-    let args = '';
-    try {
-      args = options.split(',')
-        .map(option => {
-          const [ key, value ] = option.split('=');
-          return `-${ key } ${ value }`;
-        })
-        .join(' ');
-    } catch (ignored) { null; }
+/**
+ * Handle the route cli command
+ *
+ * @param {string} cmd
+ * @param {string|object} params
+ * @param {string|object} options
+ */
+async function handler(cmd, params, options) {
+  if (cmd === 'create') return;
+  let { password } = typeof params === 'string' ? options : params;
 
-    co(function* () {
-      if (!password) {
-        password = yield prompt('Enter password: ');
-        process.stdin.pause();
-      }
+  const args = typeof params === 'string' ?
+    params.split(',')
+      .map(option => {
+        const [ key, value ] = option.split('=');
+        return `-${ key } ${ value }`;
+      })
+      .join(' ')
+    : '';
 
-      const sdfcli = spawn(sdfcliPath, [ command, args ], { stdio: [ 'pipe', process.stdout, process.stderr ] });
+  if (!password) {
+    password = await prompt('Enter password: ');
+  }
 
-      // send password to hidden prompt by sdfcli
-      sdfcli.stdin.write(`${ password }\n`);
-    });
+  const sdfcli = spawn(sdfcliPath, [ cmd, args ]);
+
+  console.log(`\nExecuted Command:\n${ sdfcliPath } ${ cmd } ${ args }\n`);
+
+  // send password to hidden prompt by sdfcli
+  sdfcli.stdin.write(`${ password }\n`);
+
+  sdfcli.stdout.on('data', async (data) => {
+    const msg = data.toString();
+    // cleanup of duplicate "Enter password:" prompt
+    console.log(msg.replace('Enter password:', ''));
+    const lowerCaseMsg = msg.toLowerCase();
+    if (lowerCaseMsg.includes('?') || lowerCaseMsg.includes('Enter')) {
+      const answer = await prompt('> ');
+      sdfcli.stdin.write(`${ answer }\n`);
+    }
   });
 
-program.on('--help', () => {
-  console.log('  Examples:');
-  console.log('');
-  console.log('    $ sdf cmd validate p=project');
-  console.log('');
-});
+  sdfcli.stderr.on('data', (data) => {
+    console.error(`>>> Error ${ data }`);
+  });
 
-program.parse(process.argv);
+  sdfcli.on('close', (code) => {
+    if (code !== 0) {
+      console.error(`>>> SDFCLI exited with code ${ code }`);
+    }
+    sdfcli.stdin.end();
+  });
+}
+
+module.exports = handler;

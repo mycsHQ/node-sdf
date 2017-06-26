@@ -1,12 +1,13 @@
 module.exports = {
   netsuite: {
-    account: '4030959_SB1',
-    email: 'devs@mycs.com',
-    url: 'system.eu1.netsuite.com',
+    account: '',
+    email: '',
+    url: '',
     role: 3,
   },
   dependencies: {
     javaClass: 'https://system.netsuite.com/download/ide/update_17_1/plugins/com.netsuite.ide.core_2017.1.2.jar',
-    supplemental: 'https://system.netsuite.com/core/media/media.nl\?id\=78304610\&c\=NLCORP\&h\=7815ede561a186622753\&_xd\=T\&_xt\=.bin'
+    supplemental: 'https://system.netsuite.com/core/media/media.nl\?id\=78304610\&c\=NLCORP\&h\=7815ede561a186622753\&_xd\=T\&_xt\=.bin',
+    maven: 'http://mirror.synyx.de/apache/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.tar.gz'
   },
 };

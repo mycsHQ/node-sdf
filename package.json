@@ -22,15 +22,18 @@
   "bin": {
     "sdf": "./cli/sdf.js"
   },
+  "engines": {
+    "node": ">=7.8.0"
+  },
   "scripts": {
     "lint": "eslint --config .eslintrc.js --cache cli --cache lib --cache spec",
-    "setup": "node ./lib/setup.js"
+    "setup": "node ./lib/setup.js",
+    "postinstall": "npm run setup"
   },
   "dependencies": {
-    "co": "^4.6.0",
-    "co-prompt": "^1.0.0",
     "commander": "^2.9.0",
-    "maven": "^4.2.0",
+    "glob": "^7.1.2",
+    "node-jre": "^0.2.1",
     "tar-fs": "^1.15.3"
   },
   "devDependencies": {
