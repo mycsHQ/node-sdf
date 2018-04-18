@@ -1,33 +1,20 @@
 #!/usr/bin/env node
 const path = require('path');
 const { spawn } = require('child_process');
+const { cliCommands } = require('./config');
+const { required } = require('./lib/helpers');
 
-const { prompt } = require('../lib/helpers');
-
-const sdfcliPath = path.resolve(__dirname, '..', '.dependencies', 'sdfcli');
+const sdfcliPath = path.resolve(__dirname, '.dependencies', 'sdfcli');
 
 /**
  * Handle the route cli command
  *
  * @param {string} cmd
- * @param {string|object} params
  * @param {string|object} options
  */
-async function handler(cmd, params, options) {
-  if (cmd === 'create') return;
-
-  const isStringParam = typeof params === 'string';
-  const { password = await prompt('Enter password: ') } = isStringParam ? options : params;
-
-  const args = isStringParam
-    ? params
-      .split(',')
-      .map(option => {
-        const [ key, value = '' ] = option.split('=');
-        return `-${ key } ${ value }`;
-      })
-      .join(' ')
-    : '';
+async function handler(cmd, password = required('password'), options) {
+  if (!cliCommands.includes(cmd)) throw new Error(`Command "${ cmd }" not available in sdf cli`);
+  const args = options.entries(options).reduce((red, [ flag, value = '' ]) => `${ red }-${ flag } ${ value } `, '');
 
   const sdfcli = spawn(sdfcliPath, [ cmd, args ]);
 
@@ -42,18 +29,17 @@ async function handler(cmd, params, options) {
     console.log(msg.replace('Enter password:', ''));
     const lowerCaseMsg = msg.toLowerCase();
     if (lowerCaseMsg.includes('?') || lowerCaseMsg.includes('Enter')) {
-      const answer = await prompt('> ');
-      sdfcli.stdin.write(`${ answer }\n`);
+      throw new Error('Only commands without prompts allowed!');
     }
   });
 
   sdfcli.stderr.on('data', data => {
-    console.error(`>>> Error ${ data }`);
+    throw new Error(`>>> Error ${ data }`);
   });
 
   sdfcli.on('close', code => {
     if (code !== 0) {
-      console.error(`>>> SDFCLI exited with code ${ code }`);
+      throw new Error(`>>> SDFCLI exited with code ${ code }`);
     }
     sdfcli.stdin.end();
   });

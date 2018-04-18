@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "A node wrapper for Netsuite Suitescript Development Framework CLI",
   "license": "MIT",
+  "main": "index.js",
   "author": {
     "name": "Johann Roehl",
     "email": "mail@johannroehl.de",
@@ -12,13 +13,7 @@
     "url": "https://github.com/mycshq/node-sdf/issues"
   },
   "homepage": "https://github.com/mycshq/node-sdf#readme",
-  "keywords": [
-    "NetSuite",
-    "SuiteCloud",
-    "SDF",
-    "sdfcli",
-    "SuiteCloud Development Framework"
-  ],
+  "keywords": ["NetSuite", "SuiteCloud", "SDF", "sdfcli", "SuiteCloud Development Framework"],
   "bin": {
     "sdf": "./cli/sdf.js"
   },

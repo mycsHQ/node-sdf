@@ -4,8 +4,9 @@ const fs = require('fs');
 
 const { prompt } = require('../lib/helpers');
 
-const { netsuite: { account = '', email = '', url = '', role = 3 } } = require(
-  '../config');
+const {
+  netsuite: { account = '', email = '', url = '', role = 3 }
+} = require('../config');
 
 /**
  * Replace all occurences of placeholders in template specified as key/value pairs
@@ -16,12 +17,8 @@ const { netsuite: { account = '', email = '', url = '', role = 3 } } = require(
  * @returns {string} modified template content
  */
 const processTemplate = (replaceOptions, templatePath) => {
-  const template = fs.readFileSync(path.join(__dirname, templatePath))
-    .toString();
-  return Object.keys(replaceOptions)
-    .reduce(
-      (tmp, key) => tmp.replace(new RegExp(`@@${ key.toUpperCase() }`, 'g'),
-        replaceOptions[key]), template);
+  const template = fs.readFileSync(path.join(__dirname, templatePath)).toString();
+  return Object.entries(replaceOptions).reduce((tmp, [ key, value ]) => tmp.replace(new RegExp(`@@${ key.toUpperCase() }`, 'g'), value), template);
 };
 
 /**
@@ -29,17 +26,15 @@ const processTemplate = (replaceOptions, templatePath) => {
  *
  * @param {string} pathToCreate
  */
-const mkdirRecursive = (pathToCreate) => {
+const mkdirRecursive = pathToCreate => {
   // Path separators could change depending on the platform
-  pathToCreate
-    .split(path.sep)
-    .reduce((currentPath, folder) => {
-      currentPath += folder + path.sep;
-      if (!fs.existsSync(currentPath)) {
-        fs.mkdirSync(currentPath);
-      }
-      return currentPath;
-    }, '');
+  pathToCreate.split(path.sep).reduce((currentPath, folder) => {
+    currentPath += folder + path.sep;
+    if (!fs.existsSync(currentPath)) {
+      fs.mkdirSync(currentPath);
+    }
+    return currentPath;
+  }, '');
 };
 
 /**
@@ -85,33 +80,28 @@ async function handler(cmd, { path: projectPath }) {
   let customName;
   if (projectType === '1') {
     newProjectPath = path.resolve(projectPath, projectName);
-    mkdirRecursive(path.resolve(newProjectPath, 'FileCabinet',
-      'SuiteScripts', '.attributes'));
+    mkdirRecursive(path.resolve(newProjectPath, 'FileCabinet', 'SuiteScripts', '.attributes'));
   } else {
     customName = `${ publisherId }.${ projectId }`;
     newProjectPath = path.resolve(projectPath, customName);
-    mkdirRecursive(path.resolve(newProjectPath, 'SuiteApps', customName,
-      '.attributes'));
+    mkdirRecursive(path.resolve(newProjectPath, 'SuiteApps', customName, '.attributes'));
   }
 
   mkdirRecursive(path.resolve(newProjectPath, 'Objects'));
-  fs.writeFileSync(path.resolve(newProjectPath, '.sdf'),
-    `account=${ account }\nemail=${ email }\nrole=${ role }\nurl=${ url }`);
+  fs.writeFileSync(path.resolve(newProjectPath, '.sdf'), `account=${ account }\nemail=${ email }\nrole=${ role }\nurl=${ url }`);
 
   const replaceDeploy = {
-    path: projectType === '1' ?
-      '~/FileCabinet/SuiteScripts/*' :
-      `~/FileCabinet/SuiteApps/${ customName }/*`
+    path: projectType === '1' ? '~/FileCabinet/SuiteScripts/*' : `~/FileCabinet/SuiteApps/${ customName }/*`
   };
-  const deployTemplate = processTemplate(replaceDeploy, './templates/.deploy.xml');
-  fs.writeFileSync(path.resolve(newProjectPath, '.deploy.xml'), deployTemplate);
+  const deployTemplate = processTemplate(replaceDeploy, './templates/deploy.xml');
+  fs.writeFileSync(path.resolve(newProjectPath, 'deploy.xml'), deployTemplate);
 
   const replaceManifest = {
     projectName: `<projectname>${ projectName }</projectname>`,
     projectType: projectType === '1' ? 'ACCOUNTCUSTOMIZATION' : 'SUITEAPP',
     publisherId: projectType === '2' ? `<publisherid>${ publisherId }</publisherid>` : '',
     projectId: projectType === '2' ? `<projectid>${ projectId }</projectid>` : '',
-    projectVersion: projectType === '2' ? `<projectversion>${ projectVersion }<projectversion>` : '',
+    projectVersion: projectType === '2' ? `<projectversion>${ projectVersion }</projectversion>` : ''
   };
   const manifestTemplate = processTemplate(replaceManifest, './templates/manifest.xml');
   fs.writeFileSync(path.resolve(newProjectPath, 'manifest.xml'), manifestTemplate);
