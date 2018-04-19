@@ -27,8 +27,9 @@ function handler(cmd, password = required('password'), options) {
     let res = '';
     sdfcli.stdout.on('data', data => {
       const msg = data.toString().replace('Enter password:', '');
-      // console.log(msg);
-      if (msg.match(/\?|enter/gi)) throw new Error('Only commands without prompts allowed!');
+      if (msg.includes('Type YES to continue.')) {
+        sdfcli.stdin.write('YES\n');
+      }
       res += msg;
     });
 
