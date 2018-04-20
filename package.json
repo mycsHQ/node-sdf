@@ -13,7 +13,13 @@
     "url": "https://github.com/mycshq/node-sdf/issues"
   },
   "homepage": "https://github.com/mycshq/node-sdf#readme",
-  "keywords": ["NetSuite", "SuiteCloud", "SDF", "sdfcli", "SuiteCloud Development Framework"],
+  "keywords": [
+    "NetSuite",
+    "SuiteCloud",
+    "SDF",
+    "sdfcli",
+    "SuiteCloud Development Framework"
+  ],
   "bin": {
     "sdf": "./cli/sdf.js"
   },
@@ -29,7 +35,8 @@
     "commander": "^2.9.0",
     "glob": "^7.1.2",
     "node-jre": "^0.2.1",
-    "tar-fs": "^1.15.3"
+    "tar-fs": "^1.15.3",
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
