@@ -34,7 +34,7 @@
   "dependencies": {
     "commander": "^2.9.0",
     "glob": "^7.1.2",
-    "node-jre": "^0.2.1",
+    "node-jre": "^0.2.3",
     "tar-fs": "^1.15.3",
     "xml2js": "^0.4.19"
   },
