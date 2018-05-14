@@ -101,7 +101,7 @@ const sdfCreateProject = (type, projectOptions = required('projectOptions')) => 
         throw new Error('Project type has to be either "1" or "2"!');
   }
 
-  rimraf(path.normalize(`${ cwd }/${ projectName }`));
+  rimraf.sync(path.normalize(`${ cwd }/${ projectName }`));
 
   const sequence = [ type, ...keys.map(key => projectOptions[key]) ];
 
