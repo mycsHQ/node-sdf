@@ -51,10 +51,10 @@ const sdf = (cmd, password = required('password'), options = required('options')
 
     const timer = setTimeout(() => {
       sdfcli.stdin.end();
-      console.error('>>> Output');
-      console.error(res);
-      console.error('>>> Error');
-      console.dir(err, { depth: null, colors: true });
+      console.error('>>> Output'); // eslint-disable-line no-console
+      console.error(res); // eslint-disable-line no-console
+      console.error('>>> Error'); // eslint-disable-line no-console
+      console.dir(err, { depth: null, colors: true }); // eslint-disable-line no-console
       reject(new Error(`Connection timed out after ${ 5000 / 1000 }s`));
     }, timeout);
 
@@ -81,17 +81,20 @@ const sdfCreateProject = (type, projectOptions = required('projectOptions')) => 
 
   let projectName;
   let projectType;
+  let fileBaseSuffix;
   let keys;
   switch (type) {
       case '1':
         keys = [ 'name' ];
+        fileBaseSuffix = '/FileCabinet/SuiteScripts';
         projectName = name;
-        projectType = 'Account customisation project';
+        projectType = 'ACCOUNTCUSTOMIZATION';
         break;
       case '2':
         keys = [ 'publisherId', 'id', 'name', 'version' ];
+        fileBaseSuffix = '/FileCabinet/SuiteApps';
         projectName = `${ publisherId }.${ id }`;
-        projectType = 'SuiteApp project';
+        projectType = 'SUITEAPP';
         break;
       default:
         throw new Error('Project type has to be either "1" or "2"!');
@@ -104,26 +107,29 @@ const sdfCreateProject = (type, projectOptions = required('projectOptions')) => 
     .toString()
     .replace('\n', '');
 
+  const dir = `${ projectDir }/${ projectName }`;
+
   return {
     type: projectType,
-    dir: `${ projectDir }/${ projectName }`,
+    dir,
+    filebase: `${ dir }${ fileBaseSuffix }`,
     name: projectName,
     values: keys.reduce((red, key) => ({ ...red, [key]: projectOptions[key] }), {})
   };
 };
 
 /**
- * Create an sdf Account customisation project
+ * Create an sdf account customization project
  * @param {string} name
  * @param {string} [path='.']
  * @returns {object}
  */
-const sdfCreateAccountCustomisationProject = (name = required('name'), path = './') => {
+const sdfCreateAccountCustomizationProject = (name = required('name'), path = './') => {
   return sdfCreateProject('1', { name, path });
 };
 
 /**
- * Create an sdf SuiteApp project
+ * Create an sdf suite app project
  * @param {string} name
  * @param {string} id
  * @param {string} version
@@ -149,7 +155,7 @@ function sdfCreateSuiteAppProject(
 
 module.exports = {
   sdf,
-  sdfCreateAccountCustomisationProject,
+  sdfCreateAccountCustomizationProject,
   sdfCreateSuiteAppProject,
   sdfCreateProject,
   cliCommands,

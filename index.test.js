@@ -18,31 +18,30 @@ describe('index.js', () => {
     });
   });
 
-  describe('sdfCreateAccountCustomisationProject', () => {
-    const accountCustomisationProject = 'AccountCustomisationProject';
+  describe('sdfCreateAccountCustomizationProject', () => {
+    const accountCustomizationProject = 'AccountCustomizationProject';
 
     it('should throw an error if name is missing', () => {
-      expect(() => index.sdfCreateAccountCustomisationProject()).toThrowError('Parameter "name" is required!');
+      expect(() => index.sdfCreateAccountCustomizationProject()).toThrowError('Parameter "name" is required!');
     });
 
-    it('should create account customisation project', () => {
-      const res = index.sdfCreateAccountCustomisationProject(accountCustomisationProject);
-      expect(res.type).toBe('Account customisation project');
-      expect(res.dir).toContain(`/${ accountCustomisationProject }`);
-      expect(res.name).toBe(accountCustomisationProject);
-      expect(res.values).toEqual({ name: accountCustomisationProject });
+    it('should create an account customization project', () => {
+      const res = index.sdfCreateAccountCustomizationProject(accountCustomizationProject);
+      expect(res.type).toBe('ACCOUNTCUSTOMIZATION');
+      expect(res.dir).toContain(`/${ accountCustomizationProject }`);
+      expect(res.name).toBe(accountCustomizationProject);
+      expect(res.values).toEqual({ name: accountCustomizationProject });
       expect(fs.existsSync(res.dir)).toBe(true);
-      console.log(res);
       testDir = res.dir;
     });
 
-    it('should create account customisation project in dir', () => {
+    it('should create an account customization project in dir', () => {
       const dir = '.dependencies';
-      const res = index.sdfCreateAccountCustomisationProject(accountCustomisationProject, dir);
-      expect(res.type).toBe('Account customisation project');
-      expect(res.dir).toContain(`/${ dir }/${ accountCustomisationProject }`);
-      expect(res.name).toBe(accountCustomisationProject);
-      expect(res.values).toEqual({ name: accountCustomisationProject });
+      const res = index.sdfCreateAccountCustomizationProject(accountCustomizationProject, dir);
+      expect(res.type).toBe('ACCOUNTCUSTOMIZATION');
+      expect(res.dir).toContain(`/${ dir }/${ accountCustomizationProject }`);
+      expect(res.name).toBe(accountCustomizationProject);
+      expect(res.values).toEqual({ name: accountCustomizationProject });
       expect(fs.existsSync(res.dir)).toBe(true);
       testDir = res.dir;
     });
@@ -67,9 +66,9 @@ describe('index.js', () => {
       expect(() => index.sdfCreateSuiteAppProject('name', 'id', 'version')).toThrowError('Parameter "publisherId" is required!');
     });
 
-    it('should create suite app project', () => {
+    it('should create a suite app project', () => {
       const res = index.sdfCreateSuiteAppProject(suiteAppProject, '666', '0.0.1', '123456');
-      expect(res.type).toBe('SuiteApp project');
+      expect(res.type).toBe('SUITEAPP');
       expect(res.dir).toContain('/123456.666');
       expect(res.name).toBe('123456.666');
       expect(res.values).toEqual({
@@ -79,14 +78,13 @@ describe('index.js', () => {
         version: '0.0.1'
       });
       expect(fs.existsSync(res.dir)).toBe(true);
-      console.log(res);
       testDir = res.dir;
     });
 
-    it('should create suite app project in dir', () => {
+    it('should create a suite app project in dir', () => {
       const dir = '.dependencies';
       const res = index.sdfCreateSuiteAppProject(suiteAppProject, '666', '0.0.1', '123456', dir);
-      expect(res.type).toBe('SuiteApp project');
+      expect(res.type).toBe('SUITEAPP');
       expect(res.dir).toContain(`${ dir }/123456.666`);
       expect(res.name).toBe('123456.666');
       expect(res.values).toEqual({

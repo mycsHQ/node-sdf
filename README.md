@@ -13,7 +13,7 @@ Additionally a wrapper that can be used to create project structures and call sd
     - [Usage](#usage)
         - [Methods node wrapper](#methods-node-wrapper)
             - [sdf](#sdf)
-            - [sdfCreateAccountCustomisationProject](#sdfcreateaccountcustomisationproject)
+            - [sdfCreateAccountCustomizationProject](#sdfcreateaccountcustomizationproject)
             - [sdfCreateSuiteAppProject](#sdfcreatesuiteappproject)
         - [General use CLI](#general-use-cli)
             - [Install and use commands globally](#install-and-use-commands-globally)
@@ -45,14 +45,14 @@ sdf('cmd', 'password', { path: 'path' }) // timeout in ms can be specified as la
     .catch(err => console.error(err));
 ```
 
-#### sdfCreateAccountCustomisationProject
-The `sdfCreateAccountCustomisationProject` creates the `sdf` boilerplate for an account customisation project in the specified directory:
+#### sdfCreateAccountCustomizationProject
+The `sdfCreateAccountCustomizationProject` creates the `sdf` boilerplate for an ACCOUNTCUSTOMIZATION in the specified directory:
 
 ```javascript
-const res = sdfCreateAccountCustomisationProject('NAME', 'PATH');
+const res = sdfCreateAccountCustomizationProject('NAME', 'PATH');
 /**
   *  {
-  *      type: 'Account customisation project',
+  *      type: 'ACCOUNTCUSTOMIZATION',
   *      dir: '/absolutepath/PATH/NAME',
   *      name: 'NAME',
   *      values: { name: 'NAME' }
@@ -61,13 +61,13 @@ const res = sdfCreateAccountCustomisationProject('NAME', 'PATH');
 ```
 
 #### sdfCreateSuiteAppProject
-The `sdfCreateSuiteAppProject` creates the `sdf` boilerplate for a suite app project in the specified directory:
+The `sdfCreateSuiteAppProject` creates the `sdf` boilerplate for a SUITEAPP in the specified directory:
 
 ```javascript
 const res = sdfCreateSuiteAppProject('NAME', 'ID', 'VERSION', 'PUBLISHERID', 'PATH');
 /**
   *  {
-  *      type: 'SuiteApp project',
+  *      type: 'SUITEAPP',
   *      dir: '/absolutepath/PATH/PUBLISHERID.ID',
   *      name: 'PUBLISHERID.ID',
   *      values: {
@@ -105,10 +105,10 @@ As the commands are routed through to the original NetSuite sdfcli - the followi
 | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
 | `adddependencies`                                                                                      | Adds missing dependencies to the manifet file.                                                                     |
 | `deploy`                                                                                               | Deploys the folder or zip file that contains the SuiteCloud project.                                               |
-| `importbundle`                                                                                         | Imports a customisation bundle from your NetSuite account and converts it to an account customisation project.     |
-| `importfiles`                                                                                          | Imports files from your NetSuite account to the account customisation project.                                     |
+| `importbundle`                                                                                         | Imports a customization bundle from your NetSuite account and converts it to an ACCOUNTCUSTOMIZATION.     |
+| `importfiles`                                                                                          | Imports files from your NetSuite account to the ACCOUNTCUSTOMIZATION.                                     |
 | `importobjects`                                                                                        | Imports custom objects from your NetSuite account to the SuiteCloud project.                                       |
-| `listbundles`                                                                                          | Lists the customisation bundles that were created in your NetSuite account.                                        |
+| `listbundles`                                                                                          | Lists the customization bundles that were created in your NetSuite account.                                        |
 | `listfiles`                                                                                            | Lists the files in the File Cabinet of your NetSuite account.                                                      |
 | `listmissingdependencies`                                                                              | Lists the missing dependencies in the SuiteCloud project.                                                          |
 | `listobjects`                                                                                          | Lists the custom objects in your NetSuite account.                                                                 |
