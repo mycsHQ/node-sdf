@@ -54,6 +54,7 @@ const res = sdfCreateAccountCustomizationProject('NAME', 'PATH');
   *  {
   *      type: 'ACCOUNTCUSTOMIZATION',
   *      dir: '/absolutepath/PATH/NAME',
+  *      filebase: '/absolutepath/PATH/NAME/FileCabinet/SuiteScripts'
   *      name: 'NAME',
   *      values: { name: 'NAME' }
   *  }
@@ -69,6 +70,7 @@ const res = sdfCreateSuiteAppProject('NAME', 'ID', 'VERSION', 'PUBLISHERID', 'PA
   *  {
   *      type: 'SUITEAPP',
   *      dir: '/absolutepath/PATH/PUBLISHERID.ID',
+  *      filebase: '/absolutepath/PATH/NAME/FileCabinet/SuiteApps'
   *      name: 'PUBLISHERID.ID',
   *      values: {
   *         publisherId: 'PUBLISHERID',

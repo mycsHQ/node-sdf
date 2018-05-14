@@ -29,6 +29,7 @@ describe('index.js', () => {
       const res = index.sdfCreateAccountCustomizationProject(accountCustomizationProject);
       expect(res.type).toBe('ACCOUNTCUSTOMIZATION');
       expect(res.dir).toContain(`/${ accountCustomizationProject }`);
+      expect(res.filebase).toContain(`/${ accountCustomizationProject }/FileCabinet/SuiteScripts`);
       expect(res.name).toBe(accountCustomizationProject);
       expect(res.values).toEqual({ name: accountCustomizationProject });
       expect(fs.existsSync(res.dir)).toBe(true);
@@ -40,6 +41,7 @@ describe('index.js', () => {
       const res = index.sdfCreateAccountCustomizationProject(accountCustomizationProject, dir);
       expect(res.type).toBe('ACCOUNTCUSTOMIZATION');
       expect(res.dir).toContain(`/${ dir }/${ accountCustomizationProject }`);
+      expect(res.filebase).toContain(`/${ dir }/${ accountCustomizationProject }/FileCabinet/SuiteScripts`);
       expect(res.name).toBe(accountCustomizationProject);
       expect(res.values).toEqual({ name: accountCustomizationProject });
       expect(fs.existsSync(res.dir)).toBe(true);
@@ -70,6 +72,7 @@ describe('index.js', () => {
       const res = index.sdfCreateSuiteAppProject(suiteAppProject, '666', '0.0.1', '123456');
       expect(res.type).toBe('SUITEAPP');
       expect(res.dir).toContain('/123456.666');
+      expect(res.filebase).toContain('/123456.666/FileCabinet/SuiteApps');
       expect(res.name).toBe('123456.666');
       expect(res.values).toEqual({
         publisherId: '123456',
@@ -86,6 +89,7 @@ describe('index.js', () => {
       const res = index.sdfCreateSuiteAppProject(suiteAppProject, '666', '0.0.1', '123456', dir);
       expect(res.type).toBe('SUITEAPP');
       expect(res.dir).toContain(`${ dir }/123456.666`);
+      expect(res.filebase).toContain(`${ dir }/123456.666/FileCabinet/SuiteApps`);
       expect(res.name).toBe('123456.666');
       expect(res.values).toEqual({
         publisherId: '123456',
