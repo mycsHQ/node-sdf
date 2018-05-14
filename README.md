@@ -40,7 +40,7 @@ Following methods can be called and used for use of the `sdfcli` in a node scrip
 The `sdf` method can be used to directly call `sdfcli` commands:
 
 ```javascript
-sdf('cmd', 'password', { path: 'path' })
+sdf('cmd', 'password', { path: 'path' }) // timeout in ms can be specified as last param (stalls hanging processes after 10s by default)
     .then(res => console.log(res))
     .catch(err => console.error(err));
 ```

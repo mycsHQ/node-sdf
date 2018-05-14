@@ -21,9 +21,10 @@ const required = p => {
  *
  * @param {string} cmd
  * @param {string|object} options
+ * @param {number} [timeout=10000]
  * @returns {promise}
  */
-const sdf = (cmd, password = required('password'), options = required('options')) => {
+const sdf = (cmd, password = required('password'), options = required('options'), timeout = 10000) => {
   return new Promise((resolve, reject) => {
     if (!Object.values(cliCommands).includes(cmd)) return reject(Error(`Command "${ cmd }" not available in sdf cli`));
 
@@ -39,9 +40,8 @@ const sdf = (cmd, password = required('password'), options = required('options')
 
     let res = '';
     sdfcli.stdout.on('data', data => {
-      const msg = data.toString().replace('Enter password:', '');
-      if (msg.includes('Type YES to continue.')) sdfcli.stdin.write('YES\n');
-      res += msg;
+      sdfcli.stdin.write('YES\n');
+      res += data.toString();
     });
 
     let err = '';
@@ -49,9 +49,19 @@ const sdf = (cmd, password = required('password'), options = required('options')
       err += data.toString();
     });
 
-    sdfcli.on('close', code => {
+    const timer = setTimeout(() => {
       sdfcli.stdin.end();
-      if (code !== 0 || err) return reject(new Error(`>>> Command\n> ${ execCommand }\n> exited with code ${ code }\n> ${ err }`));
+      console.error('>>> Output');
+      console.error(res);
+      console.error('>>> Error');
+      console.dir(err, { depth: null, colors: true });
+      reject(new Error(`Connection timed out after ${ 5000 / 1000 }s`));
+    }, timeout);
+
+    sdfcli.on('close', code => {
+      clearTimeout(timer);
+      sdfcli.stdin.end();
+      if (code !== 0 || err) return reject(new Error(`\n> ${ execCommand }\n> exited with code ${ code }\n> ${ err }`));
       resolve({ cmd: execCommand, res });
     });
   });
