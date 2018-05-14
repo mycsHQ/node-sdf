@@ -40,7 +40,8 @@
     "travis-deploy-once": "travis-deploy-once"
   },
   "dependencies": {
-    "node-jre": "^0.2.3"
+    "node-jre": "^0.2.3",
+    "rimraf": "^2.6.2"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.3",

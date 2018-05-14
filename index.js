@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const path = require('path');
 const { spawn, execSync } = require('child_process');
+const rimraf = require('rimraf');
 const { cliCommands } = require('./config');
 
 const dependenciesPath = path.resolve(__dirname, '.dependencies');
@@ -99,6 +100,8 @@ const sdfCreateProject = (type, projectOptions = required('projectOptions')) => 
       default:
         throw new Error('Project type has to be either "1" or "2"!');
   }
+
+  rimraf(path.normalize(`${ cwd }/${ projectName }`));
 
   const sequence = [ type, ...keys.map(key => projectOptions[key]) ];
 
