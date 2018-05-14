@@ -1,13 +1,13 @@
 {
   "name": "node-sdf",
-  "version": "0.1.0",
+  "version": "0.0.0-development",
   "description": "A node wrapper for Netsuite Suitescript Development Framework CLI",
   "license": "MIT",
   "main": "index.js",
   "author": {
     "name": "Johann Roehl",
     "email": "mail@johannroehl.de",
-    "url": "https://github.com/mycsHQ/node-sdf"
+    "url": "https://johannroehl.de"
   },
   "bugs": {
     "url": "https://github.com/mycshq/node-sdf/issues"
@@ -20,29 +20,37 @@
     "sdfcli",
     "SuiteCloud Development Framework"
   ],
+  "repository": "https://github.com/mycsHQ/node-sdf",
   "bin": {
-    "sdf": "./cli/sdf.js"
+    "sdfcli": "./.dependencies/sdfcli",
+    "sdfcli-createproject": "./.dependencies/sdfcli-createproject"
   },
   "engines": {
     "node": ">=7.8.0"
   },
   "scripts": {
-    "lint": "eslint --config .eslintrc.js --cache cli --cache lib --cache spec",
-    "setup": "node ./lib/setup.js",
-    "postinstall": "npm run setup"
+    "setup": "sh ./init.sh",
+    "postinstall": "npm run setup",
+    "preinstall": "mkdir -p ./.dependencies && touch ./.dependencies/sdfcli && touch ./.dependencies/sdfcli-createproject",
+    "test": "npm run setup && npm run lint && npm run jest",
+    "lint": "eslint *.js --config .eslintrc.js",
+    "lint:fix": "eslint *.js --config .eslintrc.js --fix",
+    "jest": "jest --coverage",
+    "semantic-release": "semantic-release",
+    "travis-deploy-once": "travis-deploy-once"
   },
   "dependencies": {
-    "commander": "^2.9.0",
-    "glob": "^7.1.2",
-    "node-jre": "^0.2.3",
-    "tar-fs": "^1.15.3",
-    "xml2js": "^0.4.19"
+    "node-jre": "^0.2.3"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
-    "eslint": "^4.0.0",
-    "eslint-config-airbnb-base": "^11.2.0",
+    "babel-eslint": "^8.2.3",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-mycs": "^2.0.0",
-    "eslint-plugin-import": "^2.3.0"
+    "eslint-plugin-import": "^2.11.0",
+    "jest": "^22.4.3",
+    "jest-cli": "^22.4.3",
+    "semantic-release": "^15.4.1",
+    "travis-deploy-once": "^5.0.0"
   }
 }

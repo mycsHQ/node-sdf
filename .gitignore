@@ -61,3 +61,5 @@ typings/
 .env
 
 yarn.lock
+sdfcli
+sdfcli-createproject
