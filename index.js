@@ -25,7 +25,7 @@ const required = p => {
  * @param {number} [timeout=10000]
  * @returns {promise}
  */
-const sdf = (cmd, password = required('password'), options = required('options'), timeout = 10000) => {
+const sdf = (cmd, password = required('password'), options = required('options'), timeout = 30000) => {
   return new Promise((resolve, reject) => {
     if (!Object.values(cliCommands).includes(cmd)) return reject(Error(`Command "${ cmd }" not available in sdf cli`));
 
@@ -34,7 +34,7 @@ const sdf = (cmd, password = required('password'), options = required('options')
     const sdfcli = spawn(sdfcliPath, [ cmd, args ]);
 
     const execCommand = `${ sdfcliPath } ${ cmd } ${ args }`;
-    console.log(`\nExecuted Command:\n${ execCommand }\n`); // eslint-disable-line no-console
+    // console.log(`\nExecuted Command:\n${ execCommand }\n`); // eslint-disable-line no-console
 
     // send password to hidden prompt by sdfcli
     sdfcli.stdin.write(`${ password }\n`);
@@ -56,7 +56,7 @@ const sdf = (cmd, password = required('password'), options = required('options')
       console.error(res); // eslint-disable-line no-console
       console.error('>>> Error'); // eslint-disable-line no-console
       console.dir(err, { depth: null, colors: true }); // eslint-disable-line no-console
-      reject(new Error(`Connection timed out after ${ 5000 / 1000 }s`));
+      reject(new Error(`Connection timed out after ${ timeout / 1000 }s`));
     }, timeout);
 
     sdfcli.on('close', code => {
@@ -77,7 +77,7 @@ const sdf = (cmd, password = required('password'), options = required('options')
  */
 const sdfCreateProject = (type, projectOptions = required('projectOptions')) => {
   const {
-    name, path: cwd = './', id, publisherId
+    name, path: cwd = `.${ path.sep }`, id, publisherId
   } = projectOptions;
 
   let projectName;
@@ -101,7 +101,7 @@ const sdfCreateProject = (type, projectOptions = required('projectOptions')) => 
         throw new Error('Project type has to be either "1" or "2"!');
   }
 
-  rimraf.sync(path.normalize(`${ cwd }/${ projectName }`));
+  rimraf.sync(path.normalize(`${ cwd }${ path.sep }${ projectName }`));
 
   const sequence = [ type, ...keys.map(key => projectOptions[key]) ];
 
@@ -110,7 +110,7 @@ const sdfCreateProject = (type, projectOptions = required('projectOptions')) => 
     .toString()
     .replace('\n', '');
 
-  const dir = `${ projectDir }/${ projectName }`;
+  const dir = `${ projectDir }${ path.sep }${ projectName }`;
 
   return {
     type: projectType,
@@ -124,10 +124,10 @@ const sdfCreateProject = (type, projectOptions = required('projectOptions')) => 
 /**
  * Create an sdf account customization project
  * @param {string} name
- * @param {string} [path='.']
+ * @param {string} [path=`.${ path.sep }`]
  * @returns {object}
  */
-const sdfCreateAccountCustomizationProject = (name = required('name'), path = './') => {
+const sdfCreateAccountCustomizationProject = (name = required('name'), path = `.${ path.sep }`) => {
   return sdfCreateProject('1', { name, path });
 };
 
@@ -137,7 +137,7 @@ const sdfCreateAccountCustomizationProject = (name = required('name'), path = '.
  * @param {string} id
  * @param {string} version
  * @param {string} publisherId
- * @param {string} [path='.']
+ * @param {string} [path=`.${ path.sep }`]
  * @returns {object}
  */
 function sdfCreateSuiteAppProject(
@@ -145,7 +145,7 @@ function sdfCreateSuiteAppProject(
   id = required('id'),
   version = required('version'),
   publisherId = required('publisherId'),
-  path = './'
+  path = `.${ path.sep }`
 ) {
   return sdfCreateProject('2', {
     name,
