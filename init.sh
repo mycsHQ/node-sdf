@@ -22,6 +22,11 @@ do
   tar zxf $filename
 done
 
+for filename in *.jar
+do
+  tar zxf $filename
+done
+
 
 NODE_MODULES=$PARENT_DIR/node_modules
 if [ ! -d "$NODE_MODULES" ]; then
@@ -31,17 +36,21 @@ fi
 
 JRE_DIR=$NODE_MODULES/node-jre/jre
 JAVA_DIR=$(find $JRE_DIR -maxdepth 1 -type d -name '*.jre')
-JAVA_HOME="JAVA_HOME=$JAVA_DIR/Contents/Home"
+JAVA_HOME="$JAVA_DIR/Contents/Home"
 
 MAVEN_DIR=$(find $DEPS_DIR -maxdepth 1 -type d -name '*maven*')
 MAVEN_BIN=$MAVEN_DIR/bin/mvn
 
 # rewrite sdfcli script
-echo "#!/bin/bash\n$JAVA_HOME $MAVEN_BIN -f $DEPS_DIR/pom.xml exec:java -Dexec.args=\"\$*\"" > sdfcli
+sed -i "" "s|/webdev/sdf/sdk/|$DEPS_DIR|" $DEPS_DIR/sdfcli
+sed -i "" "s|mvn|JAVA_HOME=$JAVA_HOME $MAVEN_BIN|" $DEPS_DIR/sdfcli
 
+# create symlinks
 rm -f $PARENT_DIR/sdfcli $PARENT_DIR/sdfcli-createproject
 ln -s $DEPS_DIR/sdfcli $PARENT_DIR/sdfcli
 ln -s $DEPS_DIR/sdfcli-createproject $PARENT_DIR/sdfcli-createproject
+
+# $(JAVA_HOME=$JAVA_HOME && $MAVEN_BIN exec:java -Dexec.args=)
 
 echo ""
 echo "Setup completed"
