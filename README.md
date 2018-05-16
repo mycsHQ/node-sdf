@@ -8,6 +8,8 @@
 This is a node wrapper for Netsuite Suitescript Development Framework CLI. It provides the necessary dependencies to run the `sdfcli` in an encapsulated manner (NO global JAVA installation required!).
 Additionally a wrapper that can be used to create project structures and call sdf commands in a node script is provided through methods in `index.js`.
 
+:rotating_light: The commands and cli work only for the 2018.1 NS release and are only tested on MacOS X and Linux
+
 - [node-sdf](#node-sdf)
     - [Installation](#installation)
     - [Usage](#usage)
@@ -107,8 +109,8 @@ As the commands are routed through to the original NetSuite sdfcli - the followi
 | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
 | `adddependencies`                                                                                      | Adds missing dependencies to the manifet file.                                                                     |
 | `deploy`                                                                                               | Deploys the folder or zip file that contains the SuiteCloud project.                                               |
-| `importbundle`                                                                                         | Imports a customization bundle from your NetSuite account and converts it to an ACCOUNTCUSTOMIZATION.     |
-| `importfiles`                                                                                          | Imports files from your NetSuite account to the ACCOUNTCUSTOMIZATION.                                     |
+| `importbundle`                                                                                         | Imports a customization bundle from your NetSuite account and converts it to an ACCOUNTCUSTOMIZATION.              |
+| `importfiles`                                                                                          | Imports files from your NetSuite account to the ACCOUNTCUSTOMIZATION.                                              |
 | `importobjects`                                                                                        | Imports custom objects from your NetSuite account to the SuiteCloud project.                                       |
 | `listbundles`                                                                                          | Lists the customization bundles that were created in your NetSuite account.                                        |
 | `listfiles`                                                                                            | Lists the files in the File Cabinet of your NetSuite account.                                                      |

@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-const path = require('path');
+const p = require('path');
 const { spawn, execSync } = require('child_process');
 const rimraf = require('rimraf');
 const { cliCommands } = require('./config');
 
-const dependenciesPath = path.resolve(__dirname, '.dependencies');
-const sdfcliPath = path.resolve(dependenciesPath, 'sdfcli');
-const sdfcliCreateProjectPath = path.resolve(dependenciesPath, 'sdfcli-createproject');
+const dependenciesPath = p.resolve(__dirname, '.dependencies');
+const sdfcliPath = p.resolve(dependenciesPath, 'sdfcli');
+const sdfcliCreateProjectPath = p.resolve(dependenciesPath, 'sdfcli-createproject');
 
 /**
  * Throw error
@@ -77,7 +77,7 @@ const sdf = (cmd, password = required('password'), options = required('options')
  */
 const sdfCreateProject = (type, projectOptions = required('projectOptions')) => {
   const {
-    name, path: cwd = `.${ path.sep }`, id, publisherId
+    name, path: cwd = `.${ p.sep }`, id, publisherId
   } = projectOptions;
 
   let projectName;
@@ -101,7 +101,7 @@ const sdfCreateProject = (type, projectOptions = required('projectOptions')) => 
         throw new Error('Project type has to be either "1" or "2"!');
   }
 
-  rimraf.sync(path.normalize(`${ cwd }${ path.sep }${ projectName }`));
+  rimraf.sync(p.normalize(`${ cwd }${ p.sep }${ projectName }`));
 
   const sequence = keys.map(key => projectOptions[key]);
 
@@ -110,7 +110,7 @@ const sdfCreateProject = (type, projectOptions = required('projectOptions')) => 
     .toString()
     .replace('\n', '');
 
-  const dir = `${ projectDir }${ path.sep }${ projectName }`;
+  const dir = `${ projectDir }${ p.sep }${ projectName }`;
 
   return {
     type: projectType,
@@ -124,10 +124,10 @@ const sdfCreateProject = (type, projectOptions = required('projectOptions')) => 
 /**
  * Create an sdf account customization project
  * @param {string} name
- * @param {string} [path=`.${ path.sep }`]
+ * @param {string} [path=`.${ p.sep }`]
  * @returns {object}
  */
-const sdfCreateAccountCustomizationProject = (name = required('name'), path = `.${ path.sep }`) => {
+const sdfCreateAccountCustomizationProject = (name = required('name'), path = `.${ p.sep }`) => {
   return sdfCreateProject('1', { name, path });
 };
 
@@ -137,7 +137,7 @@ const sdfCreateAccountCustomizationProject = (name = required('name'), path = `.
  * @param {string} id
  * @param {string} version
  * @param {string} publisherId
- * @param {string} [path=`.${ path.sep }`]
+ * @param {string} [path=`.${ p.sep }`]
  * @returns {object}
  */
 function sdfCreateSuiteAppProject(
@@ -145,7 +145,7 @@ function sdfCreateSuiteAppProject(
   id = required('id'),
   version = required('version'),
   publisherId = required('publisherId'),
-  path = `.${ path.sep }`
+  path = `.${ p.sep }`
 ) {
   return sdfCreateProject('2', {
     name,

@@ -104,9 +104,12 @@ describe('index.js', () => {
 
   describe('sdf', () => {
     it('should spawn the correct command and fail', () => {
-      return index.sdf('listfiles', 'PassWord', { p: 'project', path: 'path' }).catch(err => {
-        expect(err.message).toContain('listfiles -p project -path path');
-      });
+      return index
+        .sdf('listfiles', 'PassWord', { p: 'project', path: 'path' })
+        .then(console.log)
+        .catch(err => {
+          expect(err.message).toContain('listfiles -p project -path path');
+        });
     });
 
     it('should fail if command does not exist', () => {
@@ -121,6 +124,13 @@ describe('index.js', () => {
 
     it('should throw an error if password is missing', () => {
       expect(() => index.sdf('listfiles')).toThrowError('Parameter "password" is required!');
+    });
+  });
+
+  describe('sdfcli', () => {
+    it('should call the sdfcli', () => {
+      const res = execSync('./sdfcli').toString();
+      expect(res).toContain('BUILD SUCCESS');
     });
   });
 });
