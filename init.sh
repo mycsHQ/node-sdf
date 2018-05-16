@@ -8,6 +8,7 @@ echo ""
 (which wget || ( which brew && brew install wget || which apt-get && apt-get install wget || which yum && yum install wget || which choco && choco install wget)) &> /dev/null
 (which tar || ( which brew && brew install gnu-tar || which apt-get && apt-get install tar || which yum && yum install tar || which choco && choco install tar)) &> /dev/null
 (which find || ( which brew && brew install findutils || which apt-get && apt-get install findutils || which yum && yum install findutils || which choco && choco install findutils)) &> /dev/null
+(which sed || ( which brew && brew uninstall gnu-sed && brew install gnu-sed --with-default-names || which apt-get && apt-get install sed || which yum && yum install sed || which choco && choco install sed)) &> /dev/null
 
 PARENT_DIR=$(pwd)
 DEPS_DIR=$PARENT_DIR/.dependencies
@@ -42,8 +43,8 @@ MAVEN_DIR=$(find $DEPS_DIR -maxdepth 1 -type d -name '*maven*')
 MAVEN_BIN=$MAVEN_DIR/bin/mvn
 
 # rewrite sdfcli script
-sed -i "" "s|/webdev/sdf/sdk/|$DEPS_DIR|" $DEPS_DIR/sdfcli
-sed -i "" "s|mvn|JAVA_HOME=$JAVA_HOME $MAVEN_BIN|" $DEPS_DIR/sdfcli
+sed -i -e "s|/webdev/sdf/sdk/|$DEPS_DIR|" $DEPS_DIR/sdfcli
+sed -i -e "s|mvn|JAVA_HOME=$JAVA_HOME $MAVEN_BIN|" $DEPS_DIR/sdfcli
 
 # create symlinks
 rm -f $PARENT_DIR/sdfcli $PARENT_DIR/sdfcli-createproject

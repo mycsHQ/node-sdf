@@ -103,9 +103,9 @@ const sdfCreateProject = (type, projectOptions = required('projectOptions')) => 
 
   rimraf.sync(path.normalize(`${ cwd }${ path.sep }${ projectName }`));
 
-  const sequence = [ type, ...keys.map(key => projectOptions[key]) ];
+  const sequence = keys.map(key => projectOptions[key]);
 
-  execSync(`cd ${ cwd } && echo "${ sequence.join('\n') }\n" | ${ sdfcliCreateProjectPath }`);
+  execSync(`cd ${ cwd } && echo "${ type } ${ sequence.join('\n') }\n" | ${ sdfcliCreateProjectPath }`);
   const projectDir = execSync(`cd ${ cwd } && echo $(pwd)`)
     .toString()
     .replace('\n', '');
