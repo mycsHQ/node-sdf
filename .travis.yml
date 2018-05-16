@@ -5,6 +5,8 @@ cache:
 node_js:
   - "7"
   - "8"
+script:
+  - npm test
 after_success:
   - npm run travis-deploy-once "npm run semantic-release"
 branches:
