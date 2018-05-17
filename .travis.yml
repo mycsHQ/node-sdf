@@ -3,8 +3,10 @@ cache:
   directories:
     - ~/.npm
 node_js:
-  - "7"
   - "8"
+  - "9"
+before_install:
+  - sudo apt-get -qq update
 script:
   - npm test
 after_success:
