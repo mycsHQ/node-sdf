@@ -5,8 +5,9 @@ cache:
 node_js:
   - "8"
   - "9"
-before_install:
-  - sudo apt-get -qq update
+addons:
+  apt:
+    update: true
 script:
   - npm test
 after_success:

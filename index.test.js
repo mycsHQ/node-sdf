@@ -103,10 +103,10 @@ describe('index.js', () => {
   });
 
   describe('sdf', () => {
-    it('should spawn the correct command and fail', () => {
+    xit('should spawn the correct command and fail', () => {
       return index
         .sdf('listfiles', 'PassWord', { p: 'project', path: 'path' })
-        .then(console.log)
+        .then(console.log) // eslint-disable-line no-console
         .catch(err => {
           expect(err.message).toContain('listfiles -p project -path path');
         });
@@ -131,6 +131,7 @@ describe('index.js', () => {
     it('should call the sdfcli', () => {
       const res = execSync('./sdfcli').toString();
       expect(res).toContain('BUILD SUCCESS');
+      expect(res).toContain('SuiteCloud Development Framework CLI');
     });
   });
 });
