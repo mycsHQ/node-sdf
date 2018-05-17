@@ -16,8 +16,13 @@ DEPS_DIR=$PARENT_DIR/.dependencies
 
 mkdir -p $DEPS_DIR
 cd $DEPS_DIR
+
+# check if --show-progess is supported
+wget --help | grep -q '\--show-progress' && \
+  _PROGRESS_OPT="-q --show-progress" || _PROGRESS_OPT=""
+
 # download all paths from urls file check content-disposition header for name and skip if file exists
-wget -i $PARENT_DIR/urls --content-disposition -nc -q --show-progress
+wget -i $PARENT_DIR/urls --content-disposition -nc $_PROGRESS_OPT
 
 for filename in *.tar.gz
 do
